@@ -1,0 +1,86 @@
+@startuml Template Method Pattern
+
+abstract class TowerFloor {
+    +{final} explore(party: List<Hero>): FloorResult
+    #announce(): void
+    #{abstract} setup(party: List<Hero>): void
+    #{abstract} resolveChallenge(party: List<Hero>): FloorResult
+    #shouldAwardLoot(result: FloorResult): boolean
+    #{abstract} awardLoot(party: List<Hero>, result: FloorResult): void
+    #cleanup(party: List<Hero>): void
+    #{abstract} getFloorName(): String
+}
+
+class CombatFloor {
+    -floorName: String
+    -monster: Monster
+    #setup(party: List<Hero>): void
+    #resolveChallenge(party: List<Hero>): FloorResult
+    #awardLoot(party: List<Hero>, result: FloorResult): void
+    #getFloorName(): String
+}
+
+class TrapFloor {
+    -floorName: String
+    -trapDamage: int
+    #setup(party: List<Hero>): void
+    #resolveChallenge(party: List<Hero>): FloorResult
+    #shouldAwardLoot(result: FloorResult): boolean
+    #awardLoot(party: List<Hero>, result: FloorResult): void
+    #cleanup(party: List<Hero>): void
+    #getFloorName(): String
+}
+
+class BossFloor {
+    -floorName: String
+    -boss: Monster
+    #announce(): void
+    #setup(party: List<Hero>): void
+    #resolveChallenge(party: List<Hero>): FloorResult
+    #awardLoot(party: List<Hero>, result: FloorResult): void
+    #getFloorName(): String
+}
+
+class RestFloor {
+    -floorName: String
+    -healAmount: int
+    #announce(): void
+    #setup(party: List<Hero>): void
+    #resolveChallenge(party: List<Hero>): FloorResult
+    #shouldAwardLoot(result: FloorResult): boolean
+    #awardLoot(party: List<Hero>, result: FloorResult): void
+    #getFloorName(): String
+}
+
+TowerFloor <|-- CombatFloor
+TowerFloor <|-- TrapFloor
+TowerFloor <|-- BossFloor
+TowerFloor <|-- RestFloor
+
+note top of TowerFloor
+  explore() is **final** — never overridden.
+  Template Method skeleton:
+  1. announce()
+  2. setup()
+  3. resolveChallenge()
+  4. shouldAwardLoot() → awardLoot()
+  5. cleanup()
+end note
+
+note right of TrapFloor
+  Overrides hook:
+  shouldAwardLoot() → false
+end note
+
+note right of RestFloor
+  Overrides hooks:
+  announce()
+  shouldAwardLoot() → false
+end note
+
+note right of BossFloor
+  Overrides hook:
+  announce() — dramatic intro
+end note
+
+@enduml

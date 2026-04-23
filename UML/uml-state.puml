@@ -1,0 +1,78 @@
+@startuml State Pattern
+
+interface HeroState {
+    +getName(): String
+    +modifyOutgoingDamage(basePower: int): int
+    +modifyIncomingDamage(rawDamage: int): int
+    +onTurnStart(hero: Hero): void
+    +onTurnEnd(hero: Hero): void
+    +canAct(): boolean
+}
+
+class NormalState {
+    +getName(): String
+    +modifyOutgoingDamage(basePower: int): int
+    +modifyIncomingDamage(rawDamage: int): int
+    +onTurnStart(hero: Hero): void
+    +onTurnEnd(hero: Hero): void
+    +canAct(): boolean
+}
+
+class PoisonState {
+    -turnsRemaining: int
+    +PoisonState(turns: int)
+    +getName(): String
+    +modifyOutgoingDamage(basePower: int): int
+    +modifyIncomingDamage(rawDamage: int): int
+    +onTurnStart(hero: Hero): void
+    +onTurnEnd(hero: Hero): void
+    +canAct(): boolean
+}
+
+class BerserkState {
+    +getName(): String
+    +modifyOutgoingDamage(basePower: int): int
+    +modifyIncomingDamage(rawDamage: int): int
+    +onTurnStart(hero: Hero): void
+    +onTurnEnd(hero: Hero): void
+    +canAct(): boolean
+}
+
+class StunState {
+    -turnsRemaining: int
+    +StunState(turns: int)
+    +getName(): String
+    +modifyOutgoingDamage(basePower: int): int
+    +modifyIncomingDamage(rawDamage: int): int
+    +onTurnStart(hero: Hero): void
+    +onTurnEnd(hero: Hero): void
+    +canAct(): boolean
+}
+
+class Hero {
+    -name: String
+    -hp: int
+    -maxHp: int
+    -attackPower: int
+    -defense: int
+    -state: HeroState
+    +setState(state: HeroState): void
+    +getState(): HeroState
+    +canAct(): boolean
+    +onTurnStart(): void
+    +onTurnEnd(): void
+    +getAttackDamage(): int
+    +takeDamageWithState(rawDamage: int): void
+}
+
+HeroState <|.. NormalState
+HeroState <|.. PoisonState
+HeroState <|.. BerserkState
+HeroState <|.. StunState
+Hero --> HeroState : state
+
+PoisonState ..> NormalState : transitions to
+BerserkState ..> NormalState : transitions to
+StunState ..> NormalState : transitions to
+
+@enduml
