@@ -9,6 +9,9 @@ import com.narxoz.rpg.floor.TowerFloor;
 import com.narxoz.rpg.floor.TrapFloor;
 import com.narxoz.rpg.state.BerserkState;
 
+import com.narxoz.rpg.tower.TowerRunResult;
+import com.narxoz.rpg.tower.TowerRunner;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,7 +39,17 @@ public class Main {
         );
 
         // TODO (student): Instantiate a tower runner and execute the tower climb
+        TowerRunner runner = new TowerRunner(floors, party);
+        TowerRunResult result = runner.run();
+
         // TODO (student): Track and print results (floors cleared, heroes surviving, tower status)
         // TODO (student): Demonstrate visible state transitions in the output
+        System.out.println("\n==========================================");
+        System.out.println("           TOWER RUN COMPLETE");
+        System.out.println("==========================================");
+        System.out.println("Floors cleared : " + result.getFloorsCleared() + " / " + floors.size());
+        System.out.println("Heroes surviving: " + result.getHeroesSurviving());
+        System.out.println("Tower conquered : " + (result.isReachedTop() ? "YES - VICTORY!" : "NO - Defeated"));
+        System.out.println("==========================================");
     }
 }
